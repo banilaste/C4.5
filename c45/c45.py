@@ -93,9 +93,9 @@ class C45:
 			remainingAttributes.remove(best)
 			node = Node(False, best, best_threshold)
 			node.children = [self.recursiveGenerateTree(subset, remainingAttributes) for subset in splitted]
-			if all(map(lambda x: x.label == 'Fail', node.children):
+			if all(map(lambda x: x.label == 'Fail', node.children)):
 				return Node(True, "Fail", None)
-			elif all(map(lambda x: x.label != 'Fail', node.children):
+			elif all(map(lambda x: x.label != 'Fail', node.children)):
 				return node
 			else:
 				majClass = self.getMajClass(curData)
