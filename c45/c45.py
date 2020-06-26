@@ -123,6 +123,14 @@ class C45:
 			return False
 		else:
 			return True
+			
+	def isAttrIgnored(self, attribute):
+		if attribute not in self.attributes:
+			raise ValueError("Attribute not listed")
+		elif len(self.attrValues[attribute]) == 1 and self.attrValues[attribute][0] == "ignored":
+			return True
+		else:
+			return False
 
 	def splitAttribute(self, curData, curAttributes):
 		splitted = []
@@ -132,6 +140,8 @@ class C45:
 		best_threshold = None
 		for attribute in curAttributes:
 			indexOfAttribute = self.attributes.index(attribute)
+			if self.isAttrIgnored(attribute):
+				continue
 			if self.isAttrDiscrete(attribute):
 				#split curData into n-subsets, where n is the number of 
 				#different values of attribute i. Choose the attribute with
@@ -214,4 +224,3 @@ class Node:
 		self.threshold = threshold
 		self.isLeaf = isLeaf
 		self.children = []
-
