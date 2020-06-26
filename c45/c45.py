@@ -2,7 +2,7 @@ import math
 class C45:
 
 	"""Creates a decision tree with C4.5 algorithm"""
-	def __init__(self, pathToData,pathToNames):
+	def __init__(self, pathToData,pathToNames, limit=-1):
 		self.filePathToData = pathToData
 		self.filePathToNames = pathToNames
 		self.data = []
@@ -11,6 +11,7 @@ class C45:
 		self.attrValues = {}
 		self.attributes = []
 		self.tree = None
+		self.limit = limit
 
 	def fetchData(self):
 		with open(self.filePathToNames, "r") as file:
@@ -25,6 +26,9 @@ class C45:
 		self.attributes = list(self.attrValues.keys())
 		with open(self.filePathToData, "r") as file:
 			for line in file:
+				self.limit -= 1
+				if self.limit == 0:
+					return
 				row = [x.strip() for x in line.split(",")]
 				if row != [] or row != [""]:
 					self.data.append(row)
