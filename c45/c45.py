@@ -70,12 +70,14 @@ class C45:
 		self.tree = self.recursiveGenerateTree(self.data, self.attributes)
 
 	def recursiveGenerateTree(self, curData, curAttributes):
-		allSame = self.allSameClass(curData)
-
+		
 		if len(curData) == 0:
 			#Fail
 			return Node(True, "Fail", None)
-		elif allSame is not False:
+	
+		allSame = self.allSameClass(curData)
+
+		if allSame is not False:
 			#return a node with that class
 			return Node(True, allSame, None)
 		elif len(curAttributes) == 0:
@@ -84,11 +86,20 @@ class C45:
 			return Node(True, majClass, None)
 		else:
 			(best,best_threshold,splitted) = self.splitAttribute(curData, curAttributes)
+			if best == -1:
+				#Fail
+				return Node(True, "Fail", None)
 			remainingAttributes = curAttributes[:]
 			remainingAttributes.remove(best)
 			node = Node(False, best, best_threshold)
 			node.children = [self.recursiveGenerateTree(subset, remainingAttributes) for subset in splitted]
-			return node
+			if all(map(lambda x: x.label == 'Fail', node.children):
+				return Node(True, "Fail", None)
+			elif all(map(lambda x: x.label != 'Fail', node.children):
+				return node
+			else:
+				majClass = self.getMajClass(curData)
+				return Node(True, majClass, None)
 
 	def getMajClass(self, curData):
 		freq = [0]*len(self.classes)
@@ -203,5 +214,4 @@ class Node:
 		self.threshold = threshold
 		self.isLeaf = isLeaf
 		self.children = []
-
 
